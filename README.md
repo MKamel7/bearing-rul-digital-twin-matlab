@@ -38,4 +38,22 @@ The first generated figure is therefore a snapshot sanity check, not an RUL or l
 ```
 
 Output: `results/figures/bearing1_1_first_snapshot.png`.
+## Current engineering chain
+
+1. `docs/data/xjtu_sy_bearing_geometry.csv` records the LDK UER204 geometry used for fault-frequency calculations.
+2. `calculateBearingFaultFrequencies` computes FTF, BPFO, BPFI and BSF for each XJTU-SY operating condition.
+3. `models/bearing_body_baseline.slx` is the first reduced Simscape Multibody body: world frame, solver configuration, revolute shaft/inner-ring body and a separated housing body.
+4. Defect excitation, housing transfer-path identification and RUL state estimation are deliberately later steps.
+
+Generate the frequency table:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/generate_fault_frequency_table.m')"
+```
+
+Generate the Simscape body model and exported diagram:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "addpath(genpath('src')); buildBearingBodyModel(string(pwd)); load_system('models/bearing_body_baseline.slx'); open_system('bearing_body_baseline'); print('-sbearing_body_baseline','-dpng','-r150',fullfile(pwd,'results','figures','bearing_body_baseline_model.png')); close_system('bearing_body_baseline',0);"
+```
 
