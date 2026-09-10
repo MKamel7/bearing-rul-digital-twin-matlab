@@ -1,0 +1,9 @@
+Parameter,Value,Unit,Source,Status,Notes
+outer race diameter,39.80,mm,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+inner race diameter,29.30,mm,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+bearing mean diameter,34.55,mm,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+ball diameter,7.92,mm,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+number of balls,8,count,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+contact angle,0,deg,XJTU-SY author geometry table,published,LDK UER204 tested bearing
+load rating static,6.65,kN,XJTU-SY author geometry table,published,Static load rating
+load rating dynamic,12.82,kN,XJTU-SY author geometry table,published,Dynamic load rating

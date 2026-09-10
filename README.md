@@ -27,4 +27,15 @@ This project targets a bearing digital-twin prototype calibrated with recorded e
 - `docs/model`: model notes and claim boundaries.
 - `data/raw`: downloaded original archives and extracted raw data, not committed unless explicitly approved.
 - `results/figures`: generated plots.
+## Data status
+
+The full official XJTU-SY package is still a data-access gate. On 2026-09-10, the author-listed Google Drive scripted endpoints returned HTTP 500, and the Dropbox mirror reported that the shared link was deleted or disabled. A compact Kaggle mirror downloaded successfully, but it contains five Condition 1 CSV files where each file is one 32,768-sample vibration snapshot, not the official per-minute lifecycle folder.
+
+The first generated figure is therefore a snapshot sanity check, not an RUL or lifecycle result:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_first_snapshot.m')"
+```
+
+Output: `results/figures/bearing1_1_first_snapshot.png`.
 

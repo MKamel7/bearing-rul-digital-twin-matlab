@@ -8,8 +8,11 @@ Condition 2 load,11,kN,XJTU-SY author landing page,published,Condition 2
 Condition 3 speed,2400,rpm,XJTU-SY author landing page,published,Condition 3
 Condition 3 load,10,kN,XJTU-SY author landing page,published,Condition 3
 Sampling rate,25600,Hz,XJTU-SY author landing page,published,Horizontal and vertical acceleration
+Snapshot points,32768,samples per channel,XJTU-SY author landing page,published,Each raw sampling file
 Snapshot duration,1.28,s,XJTU-SY author landing page,published,Each recorded vibration snapshot
 Snapshot period,60,s,XJTU-SY author landing page,published,Do not treat gaps as continuous vibration
-Failure label,unverified,,project audit,unverified,Must be transcribed per lifecycle after raw documentation audit
-Bearing geometry,not yet transcribed,,XJTU-SY author geometry table,unverified,Week 1 data gate
-Housing transfer path,not yet identified,,project identification,assumed,Fit or bound using training records only
+Bearing geometry,see xjtu_sy_bearing_geometry.csv,,XJTU-SY author geometry table,published,Manually transcribed from author table on 2026-09-10
+Failure labels,see xjtu_sy_lifecycle_manifest.csv,,XJTU-SY author lifecycle table,published,Manually transcribed from author table on 2026-09-10
+Compact mirror,see data_access_audit.md,,Kaggle dataset zhenxinchen/xjtu-sy,downloaded,Five Condition 1 snapshot CSV files only
+Official full raw package,not yet downloaded,,Author-listed Drive/Dropbox mirrors,blocked,Required before lifecycle/RUL modeling
+Housing transfer path,not yet identified,,project identification,assumed,Fit or bound using training records only after full data access
