@@ -1,0 +1,16 @@
+BearingID,ConditionID,SpeedRPM,LoadKN,SampleRateHz,SnapshotSeconds,SnapshotPeriodSeconds,ChannelCount,FailureLabel,Split,RawRelativePath
+Bearing1_1,1,2100,12,25600,1.28,60,2,unverified,train,Bearing1_1
+Bearing1_2,1,2100,12,25600,1.28,60,2,unverified,train,Bearing1_2
+Bearing1_3,1,2100,12,25600,1.28,60,2,unverified,validation,Bearing1_3
+Bearing1_4,1,2100,12,25600,1.28,60,2,unverified,test,Bearing1_4
+Bearing1_5,1,2100,12,25600,1.28,60,2,unverified,train,Bearing1_5
+Bearing2_1,2,2250,11,25600,1.28,60,2,unverified,train,Bearing2_1
+Bearing2_2,2,2250,11,25600,1.28,60,2,unverified,train,Bearing2_2
+Bearing2_3,2,2250,11,25600,1.28,60,2,unverified,validation,Bearing2_3
+Bearing2_4,2,2250,11,25600,1.28,60,2,unverified,test,Bearing2_4
+Bearing2_5,2,2250,11,25600,1.28,60,2,unverified,train,Bearing2_5
+Bearing3_1,3,2400,10,25600,1.28,60,2,unverified,train,Bearing3_1
+Bearing3_2,3,2400,10,25600,1.28,60,2,unverified,train,Bearing3_2
+Bearing3_3,3,2400,10,25600,1.28,60,2,unverified,validation,Bearing3_3
+Bearing3_4,3,2400,10,25600,1.28,60,2,unverified,test,Bearing3_4
+Bearing3_5,3,2400,10,25600,1.28,60,2,unverified,train,Bearing3_5

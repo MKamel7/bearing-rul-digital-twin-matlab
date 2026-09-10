@@ -1,0 +1,17 @@
+# Ignore generated data and MATLAB cache
+/data/raw/**
+/data/interim/**
+/data/processed/**
+/results/**
+*.asv
+*.m~
+*.slxc
+*.mex*
+*.mlproj
+*.prj
+
+# Keep folder placeholders
+!/data/raw/.gitkeep
+!/data/interim/.gitkeep
+!/data/processed/.gitkeep
+!/results/figures/.gitkeep
