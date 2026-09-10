@@ -56,4 +56,23 @@ Generate the Simscape body model and exported diagram:
 ```powershell
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "addpath(genpath('src')); buildBearingBodyModel(string(pwd)); load_system('models/bearing_body_baseline.slx'); open_system('bearing_body_baseline'); print('-sbearing_body_baseline','-dpng','-r150',fullfile(pwd,'results','figures','bearing_body_baseline_model.png')); close_system('bearing_body_baseline',0);"
 ```
+## Defect excitation and envelope features
+
+Current status:
+
+- `generateLocalizedDefectExcitation` creates a prototype localized-defect excitation: periodic impact timing at a selected fault frequency, followed by a damped resonance.
+- `extractEnvelopeBandFeatures` computes Hilbert-envelope spectral energy around BPFO and BPFI bands.
+- `bearing_body_baseline.slx` now includes a visible `Localized Defect Excitation` subsystem. Its output is terminated as a force-injection placeholder until transfer-path parameters are identified from training bearings.
+
+Generate the envelope-spectrum plot:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_envelope_features.m')"
+```
+
+Generate the defect-excitation demo:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_defect_excitation_demo.m')"
+```
 

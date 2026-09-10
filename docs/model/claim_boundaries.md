@@ -14,3 +14,7 @@ The robot and conveyor cell may demonstrate how RUL estimates could drive inspec
 - Complete replication of the XJTU-SY laboratory rig.
 - Localized spall-growth physics from the Simscape Bearing block alone.
 - Conveyor or robot-joint RUL from XJTU-SY bearing data.
+## Current defect-excitation boundary
+
+The localized-defect excitation subsystem is a prototype signal chain. It may be used to test feature extraction and later parameter-identification plumbing. It is not yet an identified physical force or validated housing transfer path. The current BPFO/BPFI envelope-band features are condition indicators on one compact snapshot mirror, not RUL predictions.
+
