@@ -1,10 +1,11 @@
-function baseline = computeHealthyBaseline(snapshotFiles, sampleRateHz, faultFrequencies, expectedSampleCount)
+function baseline = computeHealthyBaseline(snapshotFiles, sampleRateHz, faultFrequencies, expectedSampleCount, bpfoRatioRobustZLimit)
 %COMPUTEHEALTHYBASELINE Compute candidate healthy-screen features for snapshots.
 arguments
     snapshotFiles (:,1) string
     sampleRateHz (1,1) double {mustBePositive}
     faultFrequencies (1,1) struct
     expectedSampleCount (1,1) double {mustBeInteger, mustBePositive} = 32768
+    bpfoRatioRobustZLimit (1,1) double {mustBePositive} = 3.5
 end
 
 fileCount = numel(snapshotFiles);
@@ -46,4 +47,5 @@ baseline = table(fileName, sampleCount, durationSeconds, horizontalRMS, vertical
     VariableNames=["FileName", "SampleCount", "DurationSeconds", "HorizontalRMS", "VerticalRMS", ...
     "HorizontalCrestFactor", "VerticalCrestFactor", "BPFOEnergy", "BPFIEnergy", "BPFOToBPFIRatio", ...
     "DataValidityStatus", "HealthLabelAssumption"]);
+baseline = screenHealthyBaselineCandidates(baseline, bpfoRatioRobustZLimit);
 end

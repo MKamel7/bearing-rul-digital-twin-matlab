@@ -16,25 +16,29 @@ end
 geometry = readBearingGeometry(fullfile(projectRoot, "docs", "data", "xjtu_sy_bearing_geometry.csv"));
 frequencies = calculateBearingFaultFrequencies(geometry, 2100);
 baseline = computeHealthyBaseline(snapshotFiles, 25600, frequencies, 32768);
+acceptedBaseline = baseline(baseline.BaselineAccepted, :);
 
 outDir = fullfile(projectRoot, "results", "healthy_baseline");
 if ~isfolder(outDir)
     mkdir(outDir);
 end
 writetable(baseline, fullfile(outDir, "condition1_candidate_healthy_features.csv"));
+writetable(acceptedBaseline, fullfile(outDir, "condition1_accepted_candidate_healthy_features.csv"));
 
 figure("Visible", "off", "Color", "white", "Position", [100 100 1100 620]);
 tiledlayout(2, 1, "TileSpacing", "compact");
 nexttile;
-bar(categorical(baseline.FileName), baseline.HorizontalRMS, FaceColor=[0.0 0.33 0.62]);
+b = bar(categorical(baseline.FileName), baseline.HorizontalRMS);
+colorBarsByScreening(b, baseline.BaselineAccepted);
 styleAxes();
 ylabel("Horizontal RMS");
-t = title("Candidate healthy-screen RMS, compact Condition 1 snapshots");
+t = title("Screened candidate healthy baseline, compact Condition 1 snapshots");
 t.Color = "black";
-st = subtitle("Compact mirror snapshots only; not full lifecycle RUL evidence");
+st = subtitle("Blue rows are accepted candidates; red rows are suspect and excluded from baseline statistics");
 st.Color = [0.2 0.2 0.2];
 nexttile;
-bar(categorical(baseline.FileName), baseline.BPFOToBPFIRatio, FaceColor=[0.70 0.22 0.14]);
+b = bar(categorical(baseline.FileName), baseline.BPFOToBPFIRatio);
+colorBarsByScreening(b, baseline.BaselineAccepted);
 styleAxes();
 ylabel("BPFO / BPFI envelope energy");
 xlabel("Snapshot file");
@@ -48,7 +52,16 @@ close(gcf);
 
 disp(baseline);
 fprintf("Wrote %s\n", fullfile(outDir, "condition1_candidate_healthy_features.csv"));
+fprintf("Wrote %s\n", fullfile(outDir, "condition1_accepted_candidate_healthy_features.csv"));
 fprintf("Wrote %s\n", fullfile(figureDir, "condition1_candidate_healthy_baseline.png"));
+fprintf("Accepted baseline candidates: %d of %d\n", height(acceptedBaseline), height(baseline));
+
+function colorBarsByScreening(barHandle, accepted)
+    colors = repmat([0.70 0.22 0.14], numel(accepted), 1);
+    colors(accepted, :) = repmat([0.0 0.33 0.62], nnz(accepted), 1);
+    barHandle.FaceColor = "flat";
+    barHandle.CData = colors;
+end
 
 function styleAxes()
     ax = gca;

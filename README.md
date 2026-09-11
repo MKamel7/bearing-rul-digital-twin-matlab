@@ -87,6 +87,8 @@ Generate the defect-excitation demo:
 
 `computeHealthyBaseline` then computes RMS, crest factor and envelope-band metrics for the five compact Condition 1 snapshots. These rows are labelled `candidate healthy screen`, not ground-truth healthy data. The compact mirror files are early single snapshots from run-to-failure bearings, and they are not enough to make a lifecycle RUL claim.
 
+`screenHealthyBaselineCandidates` adds a robust BPFO/BPFI envelope-ratio screen before a row can be used as a baseline candidate. In the current compact mirror run, `Bearing 1_1 .csv` is structurally valid but excluded from accepted baseline statistics because it is an envelope-energy outlier.
+
 Run the baseline:
 
 ```powershell
@@ -96,5 +98,6 @@ Run the baseline:
 Outputs:
 
 - `results/healthy_baseline/condition1_candidate_healthy_features.csv`
+- `results/healthy_baseline/condition1_accepted_candidate_healthy_features.csv`
 - `results/figures/condition1_candidate_healthy_baseline.png`
 
