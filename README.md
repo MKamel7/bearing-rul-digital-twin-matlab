@@ -57,6 +57,14 @@ Generate the Simscape body model and exported diagram:
 ```powershell
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_body_simulation.m')"
 ```
+
+The Simscape model is intentionally a reduced dynamic body, not a CAD-accurate bearing assembly. To inspect the published raceway dimensions as a bearing-like visual approximation, run:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_bearing_visual_geometry.m')"
+```
+
+Output: `results/figures/bearing_visual_geometry.png`.
 ## Defect excitation and envelope features
 
 Current status:
