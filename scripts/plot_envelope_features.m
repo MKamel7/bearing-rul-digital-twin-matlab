@@ -16,8 +16,8 @@ features = extractEnvelopeBandFeatures(data.Horizontal_vibration_signals, sample
 figure("Visible", "off", "Color", "white", "Position", [100 100 1100 650]);
 plot(features.FrequencyHz, features.EnvelopePower, "Color", [0.0 0.33 0.62]);
 hold on;
-markers = [faultFrequencies.FTF faultFrequencies.BSF faultFrequencies.BPFO faultFrequencies.BPFI];
-labels = ["FTF" "BSF" "BPFO" "BPFI"];
+markers = [faultFrequencies.FTF 2*faultFrequencies.BSF faultFrequencies.BPFO faultFrequencies.BPFI];
+labels = ["FTF" "2xBSF" "BPFO" "BPFI"];
 colors = [0.40 0.40 0.40; 0.45 0.25 0.65; 0.75 0.18 0.12; 0.10 0.50 0.20];
 for idx = 1:numel(markers)
     xline(markers(idx), "--", labels(idx), Color=colors(idx,:), LabelVerticalAlignment="middle", LineWidth=1.3);
