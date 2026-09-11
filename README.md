@@ -27,6 +27,7 @@ This project targets a bearing digital-twin prototype calibrated with recorded e
 - `docs/model`: model notes and claim boundaries.
 - `data/raw`: downloaded original archives and extracted raw data, not committed unless explicitly approved.
 - `results/figures`: generated plots.
+- `results/healthy_baseline`: generated candidate healthy-screen feature tables.
 ## Data status
 
 The full official XJTU-SY package is still a data-access gate. On 2026-09-10, the author-listed Google Drive scripted endpoints returned HTTP 500, and the Dropbox mirror reported that the shared link was deleted or disabled. A compact Kaggle mirror downloaded successfully, but it contains five Condition 1 CSV files where each file is one 32,768-sample vibration snapshot, not the official per-minute lifecycle folder.
@@ -42,7 +43,7 @@ Output: `results/figures/bearing1_1_first_snapshot.png`.
 
 1. `docs/data/xjtu_sy_bearing_geometry.csv` records the LDK UER204 geometry used for fault-frequency calculations.
 2. `calculateBearingFaultFrequencies` computes FTF, BPFO, BPFI and BSF for each XJTU-SY operating condition.
-3. `models/bearing_body_baseline.slx` is the first reduced Simscape Multibody body: world frame, solver configuration, revolute shaft/inner-ring body and a separated housing body.
+3. `models/bearing_body_baseline.slx` is the first reduced Simscape Multibody body: world frame, solver configuration, revolute shaft/inner-ring body and a separated housing body. The shaft revolute joint targets XJTU-SY Condition 1 speed: 2100 rpm, represented as 12600 deg/s.
 4. Defect excitation, housing transfer-path identification and RUL state estimation are deliberately later steps.
 
 Generate the frequency table:
@@ -54,7 +55,7 @@ Generate the frequency table:
 Generate the Simscape body model and exported diagram:
 
 ```powershell
-& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "addpath(genpath('src')); buildBearingBodyModel(string(pwd)); load_system('models/bearing_body_baseline.slx'); open_system('bearing_body_baseline'); print('-sbearing_body_baseline','-dpng','-r150',fullfile(pwd,'results','figures','bearing_body_baseline_model.png')); close_system('bearing_body_baseline',0);"
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_body_simulation.m')"
 ```
 ## Defect excitation and envelope features
 
@@ -75,4 +76,25 @@ Generate the defect-excitation demo:
 ```powershell
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_defect_excitation_demo.m')"
 ```
+
+## Candidate healthy-screen baseline
+
+`readXjtuSySnapshot` validates the compact mirror CSV structure before any feature extraction:
+
+- required horizontal and vertical vibration columns
+- 32768 samples per channel
+- finite numeric values
+
+`computeHealthyBaseline` then computes RMS, crest factor and envelope-band metrics for the five compact Condition 1 snapshots. These rows are labelled `candidate healthy screen`, not ground-truth healthy data. The compact mirror files are early single snapshots from run-to-failure bearings, and they are not enough to make a lifecycle RUL claim.
+
+Run the baseline:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_healthy_baseline.m')"
+```
+
+Outputs:
+
+- `results/healthy_baseline/condition1_candidate_healthy_features.csv`
+- `results/figures/condition1_candidate_healthy_baseline.png`
 

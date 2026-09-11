@@ -29,10 +29,14 @@ add_block("sm_lib/Body Elements/Cylindrical Solid", modelName + "/Shaft and Inne
 add_block("sm_lib/Body Elements/Cylindrical Solid", modelName + "/Bearing Housing", Position=[440 245 560 335]);
 add_block("simulink/Ports & Subsystems/Subsystem", modelName + "/Localized Defect Excitation", Position=[735 95 965 215]);
 configureDefectSubsystem(modelName + "/Localized Defect Excitation");
+set_param(modelName + "/Shaft Revolute Joint", VelocityTargetSpecify="on", VelocityTargetValue="12600", VelocityTargetValueUnits="deg/s");
 
 note1 = Simulink.Annotation(modelName, "Reduced XJTU-SY LDK UER204 bearing body: housing support plus rotating shaft/inner ring. Defect excitation and transfer-path identification are intentionally separate later steps.");
 note1.Position = [70 20 610 75];
 note1.FontSize = 11;
+noteSpeed = Simulink.Annotation(modelName, "Shaft speed target: 2100 rpm = 12600 deg/s for XJTU-SY Condition 1.");
+noteSpeed.Position = [250 205 590 245];
+noteSpeed.FontSize = 10;
 note2 = Simulink.Annotation(modelName, "Localized defect excitation currently generates periodic impact timing plus damped-resonance shaping. It is not yet an identified force applied to the body.");
 note2.Position = [735 230 1120 305];
 note2.FontSize = 10;

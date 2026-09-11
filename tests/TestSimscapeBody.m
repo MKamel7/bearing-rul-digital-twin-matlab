@@ -11,12 +11,33 @@ classdef TestSimscapeBody < matlab.unittest.TestCase
             testCase.verifyTrue(all(ismember(expected, blocks)));
         end
 
+        function shaftJointTargetsConditionOneSpeed(testCase)
+            projectRoot = testCase.projectRoot();
+            modelPath = buildBearingBodyModel(projectRoot);
+            cleaner = onCleanup(@() testCase.closeModelIfLoaded("bearing_body_baseline"));
+            load_system(modelPath);
+
+            jointPath = "bearing_body_baseline/Shaft Revolute Joint";
+            testCase.verifyEqual(string(get_param(jointPath, "VelocityTargetSpecify")), "on");
+            testCase.verifyEqual(str2double(get_param(jointPath, "VelocityTargetValue")), 12600, AbsTol=1e-9);
+            testCase.verifyEqual(string(get_param(jointPath, "VelocityTargetValueUnits")), "deg/s");
+        end
+
         function generatedBodyModelUpdates(testCase)
             projectRoot = testCase.projectRoot();
             modelPath = buildBearingBodyModel(projectRoot);
             cleaner = onCleanup(@() testCase.closeModelIfLoaded("bearing_body_baseline"));
             load_system(modelPath);
             testCase.verifyWarningFree(@() set_param("bearing_body_baseline", "SimulationCommand", "update"));
+        end
+
+        function generatedBodyModelSimulatesToFinalTime(testCase)
+            projectRoot = testCase.projectRoot();
+            simOut = simulateBearingBodyModel(projectRoot);
+            cleaner = onCleanup(@() testCase.closeModelIfLoaded("bearing_body_baseline"));
+
+            testCase.verifyEqual(string(simOut.SimulationMetadata.ExecutionInfo.StopEvent), "ReachedStopTime");
+            testCase.verifyEqual(simOut.tout(end), 1.28, AbsTol=1e-9);
         end
     end
 
