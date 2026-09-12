@@ -113,3 +113,11 @@ Outputs:
 
 `docs/model/evaluation_protocol.md` defines the split and metric rules that must be followed before RUL modeling starts. In short: fit all preprocessing on training bearings only, keep final test bearings untouched until the end, report per-condition and per-mechanism errors, and include normalized-by-lifetime errors alongside absolute minutes.
 
+Compare the two candidate outer-race evaluation routes:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/compare_evaluation_protocols.m')"
+```
+
+Current verdict: nested leave-one-bearing-out is the better first fit for development; condition-held-out evaluation remains a secondary transfer stress test after the pilot is frozen. The tracked summary is `docs/reports/evaluation_protocol_comparison_2026-09-12.md`.
+
