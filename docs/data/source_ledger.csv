@@ -3,6 +3,7 @@ Bearing model,LDK UER204,,XJTU-SY author landing page,published,Primary physical
 Lifecycle count,15,bearings,XJTU-SY author landing page,published,Five bearings under each of three operating conditions
 Condition 1 speed,2100,rpm,XJTU-SY author landing page,published,Condition 1
 Condition 1 load,12,kN,XJTU-SY author landing page,published,Condition 1
+Condition 1 load to static rating ratio,1.80,ratio,Condition 1 load divided by LDK UER204 static load rating,derived,12 kN / 6.65 kN; do not translate accelerated-test minutes to field-service years
 Condition 2 speed,2250,rpm,XJTU-SY author landing page,published,Condition 2
 Condition 2 load,11,kN,XJTU-SY author landing page,published,Condition 2
 Condition 3 speed,2400,rpm,XJTU-SY author landing page,published,Condition 3

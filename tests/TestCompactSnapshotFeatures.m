@@ -1,6 +1,6 @@
-classdef TestHealthyBaselineFeatures < matlab.unittest.TestCase
+classdef TestCompactSnapshotFeatures < matlab.unittest.TestCase
     methods (Test)
-        function producesFeatureRowsForCandidateHealthySnapshots(testCase)
+        function producesFeatureRowsForCompactSnapshots(testCase)
             sampleRateHz = 1024;
             sampleCount = 1024;
             t = (0:sampleCount-1)' / sampleRateHz;
@@ -10,14 +10,15 @@ classdef TestHealthyBaselineFeatures < matlab.unittest.TestCase
             snapshotFiles(1) = testCase.writeSnapshot("snapshot_a.csv", sin(2*pi*30*t), 0.5*cos(2*pi*30*t));
             snapshotFiles(2) = testCase.writeSnapshot("snapshot_b.csv", 0.8*sin(2*pi*45*t), 0.4*cos(2*pi*45*t));
 
-            baseline = computeHealthyBaseline(snapshotFiles, sampleRateHz, struct("BPFO", bpfoHz, "BPFI", bpfiHz), sampleCount);
+            features = computeCompactSnapshotScreen(snapshotFiles, sampleRateHz, struct("BPFO", bpfoHz, "BPFI", bpfiHz), sampleCount);
 
-            testCase.verifyEqual(height(baseline), 2);
-            testCase.verifyEqual(baseline.SampleCount', [sampleCount sampleCount]);
-            testCase.verifyTrue(all(baseline.DataValidityStatus == "valid"));
-            testCase.verifyTrue(all(baseline.HealthLabelAssumption == "candidate healthy screen"));
-            testCase.verifyTrue(all(isfinite(baseline.HorizontalRMS)));
-            testCase.verifyTrue(all(isfinite(baseline.BPFOToBPFIRatio)));
+            testCase.verifyEqual(height(features), 2);
+            testCase.verifyEqual(features.SampleCount', [sampleCount sampleCount]);
+            testCase.verifyTrue(all(features.DataValidityStatus == "valid"));
+            testCase.verifyFalse(ismember("HealthLabelAssumption", string(features.Properties.VariableNames)));
+            testCase.verifyTrue(all(features.ScreeningLabelAssumption == "compact snapshot baseline candidate"));
+            testCase.verifyTrue(all(isfinite(features.HorizontalRMS)));
+            testCase.verifyTrue(all(isfinite(features.BPFOToBPFIRatio)));
         end
     end
 

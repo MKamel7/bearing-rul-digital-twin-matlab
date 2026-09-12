@@ -1,5 +1,5 @@
-function baseline = computeHealthyBaseline(snapshotFiles, sampleRateHz, faultFrequencies, expectedSampleCount, bpfoRatioRobustZLimit)
-%COMPUTEHEALTHYBASELINE Compute candidate healthy-screen features for snapshots.
+function screenedFeatures = computeCompactSnapshotScreen(snapshotFiles, sampleRateHz, faultFrequencies, expectedSampleCount, bpfoRatioRobustZLimit)
+%COMPACTSNAPSHOTSCREEN Compute provenance-neutral compact snapshot features.
 arguments
     snapshotFiles (:,1) string
     sampleRateHz (1,1) double {mustBePositive}
@@ -20,7 +20,7 @@ bpfoEnergy = zeros(fileCount, 1);
 bpfiEnergy = zeros(fileCount, 1);
 bpfoToBpfiRatio = zeros(fileCount, 1);
 dataValidityStatus = strings(fileCount, 1);
-healthLabelAssumption = repmat("candidate healthy screen", fileCount, 1);
+screeningLabelAssumption = repmat("compact snapshot baseline candidate", fileCount, 1);
 
 for idx = 1:fileCount
     snapshot = readXjtuSySnapshot(snapshotFiles(idx), expectedSampleCount);
@@ -41,11 +41,11 @@ for idx = 1:fileCount
     dataValidityStatus(idx) = snapshot.ValidityStatus;
 end
 
-baseline = table(fileName, sampleCount, durationSeconds, horizontalRMS, verticalRMS, ...
+screenedFeatures = table(fileName, sampleCount, durationSeconds, horizontalRMS, verticalRMS, ...
     horizontalCrestFactor, verticalCrestFactor, bpfoEnergy, bpfiEnergy, bpfoToBpfiRatio, ...
-    dataValidityStatus, healthLabelAssumption, ...
+    dataValidityStatus, screeningLabelAssumption, ...
     VariableNames=["FileName", "SampleCount", "DurationSeconds", "HorizontalRMS", "VerticalRMS", ...
     "HorizontalCrestFactor", "VerticalCrestFactor", "BPFOEnergy", "BPFIEnergy", "BPFOToBPFIRatio", ...
-    "DataValidityStatus", "HealthLabelAssumption"]);
-baseline = screenHealthyBaselineCandidates(baseline, bpfoRatioRobustZLimit);
+    "DataValidityStatus", "ScreeningLabelAssumption"]);
+screenedFeatures = screenCompactSnapshotCandidates(screenedFeatures, bpfoRatioRobustZLimit);
 end

@@ -1,4 +1,4 @@
-# Defect Data Review and Healthy-Screen Comparison
+# Defect Data Review and Compact-Screen Comparison
 
 Date: 2026-09-11
 
@@ -6,8 +6,8 @@ Date: 2026-09-11
 
 This report reviews the currently available compact XJTU-SY Condition 1 sensor readings and compares:
 
-- accepted candidate healthy-screen rows from `results/healthy_baseline/condition1_accepted_candidate_healthy_features.csv`
-- structurally valid but rejected/suspect rows from `results/healthy_baseline/condition1_candidate_healthy_features.csv`
+- accepted baseline candidate rows from `results/compact_snapshot_screen/condition1_accepted_baseline_candidate_features.csv`
+- structurally valid but rejected/suspect rows from `results/compact_snapshot_screen/condition1_candidate_snapshot_features.csv`
 
 This is not a full RUL validation. The compact mirror contains one 1.28 s sensor snapshot per listed bearing file, not the official full minute-by-minute lifecycles.
 
@@ -19,7 +19,7 @@ Before this report was written, the full MATLAB test suite was run with:
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "addpath(genpath('src')); results = runtests('tests'); assertSuccess(results);"
 ```
 
-Result: all tests passed, including Simscape body simulation, snapshot validation, envelope features, healthy-baseline screening and bearing visual geometry.
+Result: all tests passed, including Simscape body simulation, snapshot validation, envelope features, compact snapshot screening and bearing visual geometry.
 
 ## Data Validity Review
 
@@ -39,14 +39,14 @@ The robust BPFO/BPFI envelope-ratio screen rejects one row:
 | File | Manifest failure label | Structural validity | Baseline accepted | Reason |
 | --- | --- | --- | --- | --- |
 | Bearing 1_1 .csv | outer race | valid | no | suspect BPFO/BPFI envelope ratio, robust score 13.095 |
-| Bearing 1_2.csv | outer race | valid | yes | accepted candidate healthy screen |
-| Bearing 1_3.csv | outer race | valid | yes | accepted candidate healthy screen |
-| Bearing 1_4.csv | cage | valid | yes | accepted candidate healthy screen |
-| Bearing 1_5.csv | inner and outer race | valid | yes | accepted candidate healthy screen |
+| Bearing 1_2.csv | outer race | valid | yes | accepted baseline candidate |
+| Bearing 1_3.csv | outer race | valid | yes | accepted baseline candidate |
+| Bearing 1_4.csv | cage | valid | yes | accepted baseline candidate |
+| Bearing 1_5.csv | inner and outer race | valid | yes | accepted baseline candidate |
 
 Accepted baseline candidates: 4 of 5.
 
-## Healthy-Screen Versus Suspect Comparison
+## Compact-Screen Versus Suspect Comparison
 
 The suspect row, `Bearing 1_1 .csv`, has:
 
@@ -70,6 +70,7 @@ The following controls are active or required:
 
 - Do not use failure labels to fit normalization or thresholds.
 - Do not call all compact snapshots healthy.
+- Do not let artifact names or table labels imply verified health state.
 - Do not use `Bearing 1_1 .csv` in accepted baseline statistics.
 - Do not concatenate isolated 1.28 s snapshots as continuous vibration.
 - Do not claim RUL from the compact mirror.
@@ -82,6 +83,6 @@ The roadmap's Phase 2 requires measured-data baseline features and causal health
 Draft scripts were added for review only:
 
 - `scripts/draft_prepare_faulty_real_sensor_features.m`
-- `scripts/draft_compare_faulty_vs_healthy_real_sensor_results.m`
+- `scripts/draft_compare_fault_indicated_vs_compact_screen_real_sensor_results.m`
 
 These scripts have not been executed.

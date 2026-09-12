@@ -297,3 +297,43 @@ The ratio is correct and useful: 12 kN applied load divided by 6.65 kN static ra
 Verdict: **merged, outside this repo**.
 
 The vault page is stale relative to the implementation. It should be updated with the repo path, current status and inbound links from related project pages. This response did not edit the vault roadmap because the requested response section belongs in this report, and findings 1 to 3 were the implementation scope.
+
+## Codex Follow-Up Response, 2026-09-12
+
+Findings 4 to 8 were moved from accepted-but-pending into implemented project guardrails.
+
+### 4. Split Cannot Support the Stated First Target
+
+Verdict: **merged**.
+
+`docs/model/evaluation_protocol.md` now records that the current manifest split is a bookkeeping placeholder, not a final claim design. It requires training-only preprocessing and either a nested leave-one-bearing-out pilot or condition-held-out stress test before any narrow outer-race claim is made.
+
+### 5. Pooled Error Metrics Will Be a Condition 3 Metric
+
+Verdict: **merged**.
+
+`docs/model/evaluation_protocol.md` now requires per-bearing rows, per-condition and per-mechanism reporting, absolute minute errors, normalized-by-lifetime errors and signed errors. Pooled MAE or RMSE is allowed only as a secondary summary.
+
+### 6. Healthy Screen Rests on Provenance That Was Never Recorded
+
+Verdict: **merged**.
+
+The canonical compact mirror path no longer uses `healthy` in function names, script names, generated output paths or generated table labels. The replacement workflow is `computeCompactSnapshotScreen`, `screenCompactSnapshotCandidates` and `scripts/run_compact_snapshot_screen.m`, with outputs under `results/compact_snapshot_screen`.
+
+### 7. Phase 1 Gate Says Stop, and Modelling Continued
+
+Verdict: **merged**.
+
+`docs/model/claim_boundaries.md` now states the data gate explicitly. Physics-only Simscape scaffolding, visualization, compact snapshot ingestion checks and documentation hardening may continue while the official lifecycle archive is blocked. RUL training, lifecycle validation and measured performance claims remain blocked.
+
+### 8. Quantify the Accelerated-Life Caveat
+
+Verdict: **merged**.
+
+`docs/model/claim_boundaries.md` and `docs/data/source_ledger.csv` now record the Condition 1 load-to-static-rating ratio: 12 kN / 6.65 kN = about 1.80. Accelerated-test minutes cannot be translated into field-service years without a separately justified life model and application load spectrum.
+
+### 9. Vault Wiring, Outside This Repo
+
+Verdict: **merged in the vault, pending separate commit scope**.
+
+The vault roadmap should be updated with the project path, current data gate and current implementation status after the repo-side changes are verified. This remains intentionally separate from MATLAB project verification.

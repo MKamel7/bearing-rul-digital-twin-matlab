@@ -5,7 +5,7 @@
 %   Prepare fault-indicated feature rows from real compact XJTU-SY sensor CSVs.
 %   This script reads actual horizontal/vertical vibration snapshots, joins the
 %   audited manifest labels and computes the same causal snapshot features used
-%   in the healthy-screen baseline.
+%   in the compact snapshot screen.
 %
 % Guardrails:
 %   - No synthetic data.
@@ -34,7 +34,7 @@ for idx = 1:numel(files)
     snapshotFiles(idx) = fullfile(files(idx).folder, files(idx).name);
 end
 
-features = computeHealthyBaseline(snapshotFiles, 25600, frequencies, 32768);
+features = computeCompactSnapshotScreen(snapshotFiles, 25600, frequencies, 32768);
 features.BearingID = normalizeCompactBearingFileName(features.FileName);
 
 manifestSubset = manifest(manifest.ConditionID == 1, ["BearingID", "FaultElement", "FailureLabel", "Split", "FileCount", "LifetimeMinutes"]);

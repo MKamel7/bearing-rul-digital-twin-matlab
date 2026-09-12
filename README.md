@@ -27,7 +27,7 @@ This project targets a bearing digital-twin prototype calibrated with recorded e
 - `docs/model`: model notes and claim boundaries.
 - `data/raw`: downloaded original archives and extracted raw data, not committed unless explicitly approved.
 - `results/figures`: generated plots.
-- `results/healthy_baseline`: generated candidate healthy-screen feature tables.
+- `results/compact_snapshot_screen`: generated compact snapshot screening tables.
 ## Data status
 
 The full official XJTU-SY package is still a data-access gate. On 2026-09-10, the author-listed Google Drive scripted endpoints returned HTTP 500, and the Dropbox mirror reported that the shared link was deleted or disabled. A compact Kaggle mirror downloaded successfully, but it contains five Condition 1 CSV files where each file is one 32,768-sample vibration snapshot, not the official per-minute lifecycle folder.
@@ -85,7 +85,7 @@ Generate the defect-excitation demo:
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_defect_excitation_demo.m')"
 ```
 
-## Candidate healthy-screen baseline
+## Compact Snapshot Screen
 
 `readXjtuSySnapshot` validates the compact mirror CSV structure before any feature extraction:
 
@@ -93,19 +93,23 @@ Generate the defect-excitation demo:
 - 32768 samples per channel
 - finite numeric values
 
-`computeHealthyBaseline` then computes RMS, crest factor and envelope-band metrics for the five compact Condition 1 snapshots. These rows are labelled `candidate healthy screen`, not ground-truth healthy data. The compact mirror files are early single snapshots from run-to-failure bearings, and they are not enough to make a lifecycle RUL claim.
+`computeCompactSnapshotScreen` then computes RMS, crest factor and envelope-band metrics for the five compact Condition 1 snapshots. These rows are labelled `compact snapshot baseline candidate`, not ground-truth healthy data. The compact mirror files are isolated snapshots from run-to-failure bearings, and they are not enough to make a lifecycle RUL claim.
 
-`screenHealthyBaselineCandidates` adds a robust BPFO/BPFI envelope-ratio screen before a row can be used as a baseline candidate. In the current compact mirror run, `Bearing 1_1 .csv` is structurally valid but excluded from accepted baseline statistics because it is an envelope-energy outlier.
+`screenCompactSnapshotCandidates` adds a robust BPFO/BPFI envelope-ratio screen before a row can be used as a baseline candidate. In the current compact mirror run, `Bearing 1_1 .csv` is structurally valid but excluded from accepted baseline statistics because it is an envelope-energy outlier.
 
-Run the baseline:
+Run the screen:
 
 ```powershell
-& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_healthy_baseline.m')"
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_compact_snapshot_screen.m')"
 ```
 
 Outputs:
 
-- `results/healthy_baseline/condition1_candidate_healthy_features.csv`
-- `results/healthy_baseline/condition1_accepted_candidate_healthy_features.csv`
-- `results/figures/condition1_candidate_healthy_baseline.png`
+- `results/compact_snapshot_screen/condition1_candidate_snapshot_features.csv`
+- `results/compact_snapshot_screen/condition1_accepted_baseline_candidate_features.csv`
+- `results/figures/condition1_compact_snapshot_screen.png`
+
+## Evaluation protocol
+
+`docs/model/evaluation_protocol.md` defines the split and metric rules that must be followed before RUL modeling starts. In short: fit all preprocessing on training bearings only, keep final test bearings untouched until the end, report per-condition and per-mechanism errors, and include normalized-by-lifetime errors alongside absolute minutes.
 
