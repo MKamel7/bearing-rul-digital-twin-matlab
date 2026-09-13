@@ -30,15 +30,28 @@ This project targets a bearing digital-twin prototype calibrated with recorded e
 - `results/compact_snapshot_screen`: generated compact snapshot screening tables.
 ## Data status
 
-The full official XJTU-SY package is still a data-access gate. On 2026-09-10, the author-listed Google Drive scripted endpoints returned HTTP 500, and the Dropbox mirror reported that the shared link was deleted or disabled. A compact Kaggle mirror downloaded successfully, but it contains five Condition 1 CSV files where each file is one 32,768-sample vibration snapshot, not the official per-minute lifecycle folder.
+The official XJTU-SY package has been downloaded from the author-listed MediaFire mirror, verified by SHA-256 and extracted locally under the ignored `data/raw/xjtu-sy-official` folder. The extraction contains all 15 lifecycle folders, with per-bearing CSV counts matching `docs/data/xjtu_sy_lifecycle_manifest.csv`.
 
-The first generated figure is therefore a snapshot sanity check, not an RUL or lifecycle result:
+The compact Kaggle mirror is still retained only as a small snapshot smoke-test source. It contains five Condition 1 CSV files where each file is one 32,768-sample vibration snapshot, not the official per-minute lifecycle folder.
+
+Generate the compact snapshot sanity check:
 
 ```powershell
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_first_snapshot.m')"
 ```
 
 Output: `results/figures/bearing1_1_first_snapshot.png`.
+
+Generate the first official lifecycle sanity plot:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/plot_official_lifecycle_trend.m')"
+```
+
+Outputs:
+
+- `results/official_lifecycle/Bearing1_1_lifecycle_summary.csv`
+- `results/figures/Bearing1_1_official_lifecycle_trend.png`
 ## Current engineering chain
 
 1. `docs/data/xjtu_sy_bearing_geometry.csv` records the LDK UER204 geometry used for fault-frequency calculations.

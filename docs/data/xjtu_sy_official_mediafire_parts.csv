@@ -1,7 +1,7 @@
-PartFile,SizeBytes,Mirror,Status,DateChecked
-XJTU-SY_Bearing_Datasets.part01.rar,744488960,MediaFire official Data folder,listed-not-downloaded,2026-09-11
-XJTU-SY_Bearing_Datasets.part02.rar,744488960,MediaFire official Data folder,listed-not-downloaded,2026-09-11
-XJTU-SY_Bearing_Datasets.part03.rar,744488960,MediaFire official Data folder,listed-not-downloaded,2026-09-11
-XJTU-SY_Bearing_Datasets.part04.rar,744488960,MediaFire official Data folder,listed-not-downloaded,2026-09-11
-XJTU-SY_Bearing_Datasets.part05.rar,744488960,MediaFire official Data folder,listed-not-downloaded,2026-09-11
-XJTU-SY_Bearing_Datasets.part06.rar,722155640,MediaFire official Data folder,listed-not-downloaded,2026-09-11
+PartFile,SizeBytes,SHA256,Mirror,Status,DateChecked
+XJTU-SY_Bearing_Datasets.part01.rar,744488960,C500657353F089A4AB50212FF4DDFC7B982729E92E2B127440C8AD881D80B968,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13
+XJTU-SY_Bearing_Datasets.part02.rar,744488960,4DFA6286A8E9C7CEC1E925B347642349F36E27AB3F703C90D1D08977B7B4F61F,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13
+XJTU-SY_Bearing_Datasets.part03.rar,744488960,6929F531284F79E0209246B4EE23B23DD8D4FAAC1C0C3FF8FB131CDA4A18BD3A,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13
+XJTU-SY_Bearing_Datasets.part04.rar,744488960,2245825ACD29BED3B95E7A77879A3FBADF20F4AD4F99486384C714174621597D,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13
+XJTU-SY_Bearing_Datasets.part05.rar,744488960,E1B0A41A32B865E48EA7981C56F952A960D94335F3496B72EB4A65932F1671BD,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13
+XJTU-SY_Bearing_Datasets.part06.rar,722155640,DF1854821A9D481104476379F7BC045EA1E101427C6E36145CD7677DC7C4A684,MediaFire official Data folder,downloaded-verified-extracted,2026-09-13

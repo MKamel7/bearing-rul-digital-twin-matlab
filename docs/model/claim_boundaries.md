@@ -15,9 +15,9 @@ The robot and conveyor cell may demonstrate how RUL estimates could drive inspec
 - Localized spall-growth physics from the Simscape Bearing block alone.
 - Conveyor or robot-joint RUL from XJTU-SY bearing data.
 
-## Current data gate
+## Current lifecycle-data gate
 
-The official full XJTU-SY lifecycle archive is not yet downloaded and extracted locally. Until that gate passes, the project may continue only with physics-only Simscape scaffolding, visualization, compact snapshot ingestion checks and documentation hardening. No RUL training, lifecycle validation or measured performance claim is allowed from the compact mirror.
+The official full XJTU-SY lifecycle archive was downloaded, SHA-256 verified, extracted and file-count checked on 2026-09-13. The project may now start measured lifecycle feature extraction and training-protocol work. No RUL performance claim is allowed until the evaluation protocol is frozen, preprocessing is fit on training bearings only and held-out bearings are evaluated without post-hoc tuning.
 
 ## Accelerated-life caveat
 

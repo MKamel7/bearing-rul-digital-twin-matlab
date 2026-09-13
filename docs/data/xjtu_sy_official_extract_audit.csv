@@ -1,0 +1,16 @@
+BearingID,ConditionFolder,RelativePath,ExtractedFileCount,Status,DateChecked
+Bearing1_1,35Hz12kN,35Hz12kN/Bearing1_1,123,extracted-verified-file-count,2026-09-13
+Bearing1_2,35Hz12kN,35Hz12kN/Bearing1_2,161,extracted-verified-file-count,2026-09-13
+Bearing1_3,35Hz12kN,35Hz12kN/Bearing1_3,158,extracted-verified-file-count,2026-09-13
+Bearing1_4,35Hz12kN,35Hz12kN/Bearing1_4,122,extracted-verified-file-count,2026-09-13
+Bearing1_5,35Hz12kN,35Hz12kN/Bearing1_5,52,extracted-verified-file-count,2026-09-13
+Bearing2_1,37.5Hz11kN,37.5Hz11kN/Bearing2_1,491,extracted-verified-file-count,2026-09-13
+Bearing2_2,37.5Hz11kN,37.5Hz11kN/Bearing2_2,161,extracted-verified-file-count,2026-09-13
+Bearing2_3,37.5Hz11kN,37.5Hz11kN/Bearing2_3,533,extracted-verified-file-count,2026-09-13
+Bearing2_4,37.5Hz11kN,37.5Hz11kN/Bearing2_4,42,extracted-verified-file-count,2026-09-13
+Bearing2_5,37.5Hz11kN,37.5Hz11kN/Bearing2_5,339,extracted-verified-file-count,2026-09-13
+Bearing3_1,40Hz10kN,40Hz10kN/Bearing3_1,2538,extracted-verified-file-count,2026-09-13
+Bearing3_2,40Hz10kN,40Hz10kN/Bearing3_2,2496,extracted-verified-file-count,2026-09-13
+Bearing3_3,40Hz10kN,40Hz10kN/Bearing3_3,371,extracted-verified-file-count,2026-09-13
+Bearing3_4,40Hz10kN,40Hz10kN/Bearing3_4,1515,extracted-verified-file-count,2026-09-13
+Bearing3_5,40Hz10kN,40Hz10kN/Bearing3_5,114,extracted-verified-file-count,2026-09-13

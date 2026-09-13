@@ -24,6 +24,18 @@ classdef TestXjtuSyAudit < matlab.unittest.TestCase
             testCase.verifyEqual(testCase.valueFor(geometry, "load rating static"), 6.65, AbsTol=0.01);
             testCase.verifyEqual(testCase.valueFor(geometry, "load rating dynamic"), 12.82, AbsTol=0.01);
         end
+
+        function officialExtractionAuditMatchesManifestCounts(testCase)
+            projectRoot = testCase.projectRoot();
+            manifest = readtable(fullfile(projectRoot, "docs", "data", "xjtu_sy_lifecycle_manifest.csv"), TextType="string");
+            audit = readtable(fullfile(projectRoot, "docs", "data", "xjtu_sy_official_extract_audit.csv"), TextType="string");
+
+            joined = innerjoin(manifest(:, ["BearingID", "FileCount"]), audit, Keys="BearingID");
+            testCase.verifyEqual(height(joined), height(manifest));
+            testCase.verifyTrue(all(joined.FileCount == joined.ExtractedFileCount));
+            testCase.verifyTrue(all(joined.Status == "extracted-verified-file-count"));
+            testCase.verifyEqual(sum(joined.ExtractedFileCount), 9216);
+        end
     end
 
     methods (Access = private)

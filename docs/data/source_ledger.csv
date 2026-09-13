@@ -15,5 +15,5 @@ Snapshot period,60,s,XJTU-SY author landing page,published,Do not treat gaps as 
 Bearing geometry,see xjtu_sy_bearing_geometry.csv,,XJTU-SY author geometry table,published,Manually transcribed from author table on 2026-09-10
 Failure labels,see xjtu_sy_lifecycle_manifest.csv,,XJTU-SY author lifecycle table,published,Manually transcribed from author table on 2026-09-10
 Compact mirror,see data_access_audit.md,,Kaggle dataset zhenxinchen/xjtu-sy,downloaded,Five Condition 1 snapshot CSV files only
-Official full raw package,not yet downloaded,,Author-listed Drive/Dropbox mirrors,blocked,Required before lifecycle/RUL modeling
+Official full raw package,extracted locally,,Author-listed MediaFire mirror,downloaded,Downloaded 2026-09-13; six RAR parts verified by SHA-256 and extracted to ignored raw-data folder
 Housing transfer path,not yet identified,,project identification,assumed,Fit or bound using training records only after full data access
