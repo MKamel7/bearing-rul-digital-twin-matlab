@@ -74,11 +74,13 @@ end
 
 function renderReplayVideo(featureRows, predictionRows, videoPath, posterPath, modelName)
 frameCount = 96;
+slowdownFactor = 10;
 frameIdx = unique(round(linspace(1, height(predictionRows), frameCount)));
-figureHandle = figure("Visible", "off", "Color", "w", "Position", [100 100 1280 720]);
+figureHandle = figure("Visible", "off", "Color", "w", "Position", [100 100 960 540]);
 plotHandles = initializeReplayFigure(figureHandle, featureRows, predictionRows, modelName);
 videoWriter = VideoWriter(videoPath, "MPEG-4");
 videoWriter.FrameRate = 24;
+videoWriter.Quality = 35;
 open(videoWriter);
 videoCleanup = onCleanup(@() close(videoWriter));
 
@@ -87,7 +89,10 @@ for idx = frameIdx
     if idx == frameIdx(round(numel(frameIdx) * 0.62))
         exportgraphics(figureHandle, posterPath, Resolution=160);
     end
-    writeVideo(videoWriter, getframe(figureHandle));
+    frame = getframe(figureHandle);
+    for repeatIdx = 1:slowdownFactor
+        writeVideo(videoWriter, frame);
+    end
 end
 
 if ~isfile(posterPath)
@@ -98,13 +103,14 @@ end
 
 function plotHandles = initializeReplayFigure(figureHandle, featureRows, predictionRows, modelName)
 layout = tiledlayout(figureHandle, 2, 2, "TileSpacing", "compact", "Padding", "compact");
-title(layout, "Bearing RUL Digital Twin - measured XJTU-SY replay", "FontWeight", "bold");
+title(layout, "Bearing RUL Digital Twin - measured XJTU-SY replay", "FontWeight", "bold", ...
+    "FontSize", 18, "Color", [0.02 0.02 0.02]);
 
 rmsAxis = nexttile(layout, 1);
 plotHandles.rmsLine = plot(rmsAxis, nan, nan, "Color", [0 0.45 0.74], ...
-    "LineWidth", 1.5);
+    "LineWidth", 2.0);
 hold(rmsAxis, "on");
-plotHandles.rmsMarker = scatter(rmsAxis, nan, nan, 42, [0.85 0.33 0.1], "filled");
+plotHandles.rmsMarker = scatter(rmsAxis, nan, nan, 58, [0.85 0.33 0.1], "filled");
 hold(rmsAxis, "off");
 grid(rmsAxis, "on");
 xlim(rmsAxis, [0 max(featureRows.ElapsedMinutes)]);
@@ -112,13 +118,14 @@ ylim(rmsAxis, [0 max(featureRows.MeanRMS) * 1.12]);
 xlabel(rmsAxis, "Elapsed minutes");
 ylabel(rmsAxis, "Mean RMS");
 title(rmsAxis, "Measured vibration health input");
+styleReplayAxis(rmsAxis);
 
 rulAxis = nexttile(layout, 2);
 plotHandles.actualLine = plot(rulAxis, nan, nan, "k-", ...
-    "LineWidth", 1.5, "DisplayName", "Actual RUL");
+    "LineWidth", 2.0, "DisplayName", "Actual RUL");
 hold(rulAxis, "on");
 plotHandles.predictionLine = plot(rulAxis, nan, nan, ...
-    "Color", [0.1 0.62 0.48], "LineWidth", 1.4, "DisplayName", modelName);
+    "Color", [0.02 0.48 0.35], "LineWidth", 2.0, "DisplayName", modelName);
 hold(rulAxis, "off");
 grid(rulAxis, "on");
 xlim(rulAxis, [0 max(predictionRows.ElapsedMinutes)]);
@@ -126,22 +133,27 @@ ylim(rulAxis, [0 max(predictionRows.ActualRULMinutes) * 1.08]);
 xlabel(rulAxis, "Elapsed minutes");
 ylabel(rulAxis, "RUL minutes");
 title(rulAxis, "Online RUL estimate");
-legend(rulAxis, "Location", "northeast");
+legendHandle = legend(rulAxis, "Location", "northeast");
+legendHandle.TextColor = [0.02 0.02 0.02];
+legendHandle.Color = [1 1 1];
+legendHandle.FontSize = 10;
+styleReplayAxis(rulAxis);
 
 errorAxis = nexttile(layout, 3);
 plotHandles.errorLine = plot(errorAxis, nan, nan, ...
-    "Color", [0.85 0.33 0.1], "LineWidth", 1.4);
+    "Color", [0.78 0.22 0.04], "LineWidth", 2.0);
 grid(errorAxis, "on");
 xlim(errorAxis, [0 max(predictionRows.ElapsedMinutes)]);
 ylim(errorAxis, [0 max(predictionRows.AbsoluteErrorMinutes) * 1.08]);
 xlabel(errorAxis, "Elapsed minutes");
 ylabel(errorAxis, "Absolute error minutes");
 title(errorAxis, "Replay error");
+styleReplayAxis(errorAxis);
 
 statusAxis = nexttile(layout, 4);
 axis(statusAxis, "off");
-plotHandles.statusText = text(statusAxis, 0.03, 0.92, "", "FontName", "Consolas", "FontSize", 13, ...
-    "VerticalAlignment", "top");
+plotHandles.statusText = text(statusAxis, 0.03, 0.95, "", "FontName", "Consolas", "FontSize", 13, ...
+    "FontWeight", "bold", "Color", [0.02 0.02 0.02], "VerticalAlignment", "top");
 end
 
 function updateReplayFigure(plotHandles, featureRows, predictionRows, idx, modelName)
@@ -160,9 +172,23 @@ set(plotHandles.errorLine, "XData", predictionRows.ElapsedMinutes(1:idx), ...
     "YData", predictionRows.AbsoluteErrorMinutes(1:idx));
 
 statusText = sprintf("Bearing: Bearing3_1\nModel: %s\nSnapshot: %d / %d\nElapsed: %.0f min\n" + ...
-    "Predicted RUL: %.0f min\nActual RUL: %.0f min\nAbsolute error: %.0f min\n\n" + ...
-    "Boundary: recorded measured-data replay,\nnot live hardware acquisition.", ...
+    "Predicted RUL: %.0f min\nActual RUL: %.0f min\nAbs error: %.0f min\n" + ...
+    "Boundary: recorded data, not hardware-live.", ...
     modelName, idx, height(predictionRows), elapsed, predictedRUL, actualRUL, absoluteError);
 set(plotHandles.statusText, "String", statusText);
 drawnow limitrate;
+end
+
+function styleReplayAxis(axisHandle)
+axisHandle.Color = [1 1 1];
+axisHandle.XColor = [0.02 0.02 0.02];
+axisHandle.YColor = [0.02 0.02 0.02];
+axisHandle.GridColor = [0.55 0.55 0.55];
+axisHandle.GridAlpha = 0.25;
+axisHandle.FontSize = 11;
+axisHandle.FontWeight = "bold";
+axisHandle.Title.Color = [0.02 0.02 0.02];
+axisHandle.Title.FontWeight = "bold";
+axisHandle.XLabel.Color = [0.02 0.02 0.02];
+axisHandle.YLabel.Color = [0.02 0.02 0.02];
 end
