@@ -152,3 +152,11 @@ Run the leakage-safe age-only RUL baseline after generating the official lifecyc
 
 Current baseline verdict: both outer-race protocols are nearly tied, with weighted MAE around 899 minutes, because the baseline only sees snapshot age and training-bearing lifetimes. The tracked summary is `docs/reports/age_only_rul_baseline_2026-09-13.md`; ignored prediction and metric CSVs are written under `results/rul_baseline`.
 
+Compare the age-only baseline with the measured-feature similarity model:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_feature_similarity_rul_model.m')"
+```
+
+Current model-comparison verdict: the feature-similarity model improves snapshot-weighted minute MAE by reducing the long `Bearing3_1` error, but worsens normalized and mean per-bearing error. It is retained as an auditable comparator, not as a final public RUL performance claim. The tracked summary is `docs/reports/rul_model_comparison_2026-09-13.md`; ignored comparison artifacts are written under `results/rul_model_comparison`.
+
