@@ -26,3 +26,11 @@ The condition-held-out route is still useful, but it should be a secondary trans
 - Report per-bearing rows before aggregation.
 - Report per-condition and per-mechanism metrics before any pooled metric.
 - Keep normalized-by-lifetime error beside absolute minute error because outer-race lifetimes span from 42 to 2538 minutes in the manifest.
+
+## Generated Artifacts
+
+`scripts/compare_evaluation_protocols.m` writes:
+
+- `results/evaluation_protocol/outer_race_protocol_comparison.csv`
+- `results/evaluation_protocol/outer_race_nested_leave_one_bearing_out_folds.csv`
+- `results/evaluation_protocol/outer_race_condition_held_out_folds.csv`

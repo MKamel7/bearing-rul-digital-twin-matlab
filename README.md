@@ -121,3 +121,5 @@ Compare the two candidate outer-race evaluation routes:
 
 Current verdict: nested leave-one-bearing-out is the better first fit for development; condition-held-out evaluation remains a secondary transfer stress test after the pilot is frozen. The tracked summary is `docs/reports/evaluation_protocol_comparison_2026-09-12.md`.
 
+Generated fold assignment CSVs are written under `results/evaluation_protocol` and remain ignored artifacts until full lifecycle data is available.
+
