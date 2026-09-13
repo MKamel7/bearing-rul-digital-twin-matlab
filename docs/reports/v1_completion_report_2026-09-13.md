@@ -63,6 +63,12 @@ Run the feature-model comparison:
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_feature_similarity_rul_model.m')"
 ```
 
+Show the live measured-data RUL replay:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -r "cd('E:\Projects\bearing-rul-digital-twin-matlab'); run('scripts/show_live_rul_replay.m')"
+```
+
 Run the reliable non-Simscape regression suite:
 
 ```powershell
@@ -92,6 +98,7 @@ Tracked reports:
 - `docs/reports/age_only_rul_baseline_2026-09-13.md`
 - `docs/reports/rul_model_comparison_2026-09-13.md`
 - `docs/reports/v1_completion_report_2026-09-13.md`
+- `docs/reports/final_correctness_audit_2026-09-13.md`
 
 ## Public Claim Allowed
 
