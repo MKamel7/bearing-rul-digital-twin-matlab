@@ -34,6 +34,14 @@ Generated ignored artifacts:
 
 The plot covers 123 snapshots from elapsed minute 0 to 122. The RMS trend is stable early, rises around minute 78 and spikes near the documented end of life. This is a data-access and plotting sanity check, not an RUL model result.
 
+## First All-Bearing Feature Table
+
+`scripts/summarize_official_lifecycles.m` was run across all 15 extracted lifecycle folders. It writes per-bearing cache files and a combined ignored artifact:
+
+- `results/official_lifecycle/all_bearings_lifecycle_features.csv`
+
+The combined table has 9,216 rows, one per official lifecycle snapshot. Each row carries manifest metadata (`BearingID`, condition, speed, load, failure label and split) plus descriptive RMS and crest-factor features. This table is measured feature extraction only; it does not fit a model and does not use failure labels as online observations.
+
 ## Gate Decision
 
 The data-access gate has passed.

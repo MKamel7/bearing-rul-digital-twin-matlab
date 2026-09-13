@@ -52,6 +52,14 @@ Outputs:
 
 - `results/official_lifecycle/Bearing1_1_lifecycle_summary.csv`
 - `results/figures/Bearing1_1_official_lifecycle_trend.png`
+
+Summarize measured RMS and crest-factor features for all official lifecycle snapshots:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/summarize_official_lifecycles.m')"
+```
+
+Output: `results/official_lifecycle/all_bearings_lifecycle_features.csv` with 9,216 manifest-labelled snapshot rows. These are descriptive features only, not an RUL model.
 ## Current engineering chain
 
 1. `docs/data/xjtu_sy_bearing_geometry.csv` records the LDK UER204 geometry used for fault-frequency calculations.

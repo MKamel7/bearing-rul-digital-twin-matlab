@@ -39,8 +39,8 @@ verticalCrestFactor = zeros(numel(files), 1);
 
 for idx = 1:numel(files)
     snapshotPath = fullfile(files(idx).folder, files(idx).name);
-    snapshot = readXjtuSySnapshot(snapshotPath, expectedSampleCount);
-    features = summarizeVibrationSnapshot(snapshot.Horizontal, snapshot.Vertical, sampleRateHz);
+    [horizontal, vertical] = readLifecycleMatrix(snapshotPath, expectedSampleCount);
+    features = summarizeVibrationSnapshot(horizontal, vertical, sampleRateHz);
     horizontalRMS(idx) = features.HorizontalRMS;
     verticalRMS(idx) = features.VerticalRMS;
     horizontalCrestFactor(idx) = features.HorizontalCrestFactor;
@@ -51,4 +51,19 @@ summary = table(snapshotIndex, elapsedMinutes, fileName, horizontalRMS, vertical
     horizontalCrestFactor, verticalCrestFactor, ...
     VariableNames=["SnapshotIndex", "ElapsedMinutes", "FileName", "HorizontalRMS", "VerticalRMS", ...
     "HorizontalCrestFactor", "VerticalCrestFactor"]);
+end
+
+function [horizontal, vertical] = readLifecycleMatrix(snapshotPath, expectedSampleCount)
+data = readmatrix(snapshotPath, NumHeaderLines=1);
+if size(data, 1) ~= expectedSampleCount || size(data, 2) ~= 2
+    error("BearingRUL:UnexpectedSampleCount", ...
+        "Expected %d samples and 2 vibration columns in %s, got %d rows and %d columns.", ...
+        expectedSampleCount, snapshotPath, size(data, 1), size(data, 2));
+end
+
+horizontal = data(:, 1);
+vertical = data(:, 2);
+if any(~isfinite(horizontal)) || any(~isfinite(vertical))
+    error("BearingRUL:NonFiniteSnapshotValues", "Snapshot contains NaN or Inf vibration values: %s", snapshotPath);
+end
 end
