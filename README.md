@@ -144,3 +144,11 @@ Current verdict: nested leave-one-bearing-out is the better first fit for develo
 
 Generated fold assignment CSVs are written under `results/evaluation_protocol` and remain ignored artifacts until full lifecycle data is available.
 
+Run the leakage-safe age-only RUL baseline after generating the official lifecycle feature table:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_age_only_rul_baseline.m')"
+```
+
+Current baseline verdict: both outer-race protocols are nearly tied, with weighted MAE around 899 minutes, because the baseline only sees snapshot age and training-bearing lifetimes. The tracked summary is `docs/reports/age_only_rul_baseline_2026-09-13.md`; ignored prediction and metric CSVs are written under `results/rul_baseline`.
+
