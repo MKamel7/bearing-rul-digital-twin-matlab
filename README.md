@@ -182,3 +182,15 @@ Show the measured-data live RUL replay in MATLAB:
 
 The replay uses official XJTU-SY lifecycle feature rows for held-out `Bearing3_1`, fits the hybrid health-rate model on the other outer-race bearings in the nested fold, then predicts each incoming replay prefix as it is displayed. It is genuine measured-data replay, not a live hardware DAQ/serial/OPC UA stream.
 
+Export portfolio-ready web demo assets:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/export_web_demo_assets.m')"
+```
+
+Outputs:
+
+- `results/web_demo/bearing_rul_hybrid_live_replay.mp4`
+- `results/web_demo/bearing_rul_hybrid_live_replay_poster.png`
+- `results/web_demo/bearing_rul_hybrid_metrics.json`
+
