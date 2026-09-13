@@ -38,17 +38,12 @@ for foldIdx = 1:numel(foldIDs)
         error("BearingRUL:EmptyTrainingFold", "Fold %d has no training feature rows.", foldID);
     end
 
-    trainLifetime = lookupBearingLifetime(bearingLifetimes, trainRows.BearingID);
-    trainActualRUL = trainLifetime - trainRows.SnapshotIndex;
-    [scaledTrainFeatures, featureCenter, featureScale] = scaleTrainingFeatures(trainRows, featureNames);
+    model = fitFeatureSimilarityRulModel(trainRows, featureNames, NeighborCount=options.NeighborCount);
 
     for heldoutIdx = 1:numel(heldoutBearings)
         heldoutRows = features(features.BearingID == heldoutBearings(heldoutIdx), :);
         heldoutLifetime = lookupBearingLifetime(bearingLifetimes, heldoutRows.BearingID(1));
-        scaledHeldoutFeatures = (table2array(heldoutRows(:, featureNames)) - featureCenter) ./ featureScale;
-
-        predictedRUL = predictFromNearestTrainingSnapshots(scaledTrainFeatures, trainActualRUL, ...
-            scaledHeldoutFeatures, options.NeighborCount);
+        predictedRUL = predictFeatureSimilarityRul(model, heldoutRows);
         actualRUL = heldoutLifetime - heldoutRows.SnapshotIndex;
         signedError = predictedRUL - actualRUL;
         absoluteError = abs(signedError);
@@ -66,24 +61,6 @@ for foldIdx = 1:numel(foldIDs)
             "AbsoluteErrorMinutes", "NormalizedAbsoluteError"]);
         predictions = [predictions; predictionRows]; %#ok<AGROW>
     end
-end
-end
-
-function [scaledFeatures, featureCenter, featureScale] = scaleTrainingFeatures(rows, featureNames)
-featureValues = table2array(rows(:, featureNames));
-featureCenter = mean(featureValues, 1, "omitnan");
-featureScale = std(featureValues, 0, 1, "omitnan");
-featureScale(~isfinite(featureScale) | featureScale == 0) = 1;
-scaledFeatures = (featureValues - featureCenter) ./ featureScale;
-end
-
-function predictedRUL = predictFromNearestTrainingSnapshots(trainFeatures, trainActualRUL, heldoutFeatures, neighborCount)
-predictedRUL = zeros(size(heldoutFeatures, 1), 1);
-actualNeighborCount = min(neighborCount, numel(trainActualRUL));
-for rowIdx = 1:size(heldoutFeatures, 1)
-    distances = sum((trainFeatures - heldoutFeatures(rowIdx, :)).^2, 2);
-    [~, nearestIdx] = mink(distances, actualNeighborCount);
-    predictedRUL(rowIdx) = max(median(trainActualRUL(nearestIdx), "omitnan"), 0);
 end
 end
 
