@@ -22,8 +22,8 @@ classdef TestLiveRulReplayArtifacts < matlab.unittest.TestCase
             testCase.assertTrue(isfile(scriptPath), "Live measured-data RUL replay script is missing.");
 
             scriptText = string(fileread(scriptPath));
-            testCase.verifyTrue(contains(scriptText, "fitFeatureSimilarityRulModel"));
-            testCase.verifyTrue(contains(scriptText, "predictFeatureSimilarityRul"));
+            testCase.verifyTrue(contains(scriptText, "fitHybridHealthRateRulModel"));
+            testCase.verifyTrue(contains(scriptText, "predictHybridHealthRateRul"));
             testCase.verifyFalse(contains(scriptText, "outer_race_rul_model_predictions.csv"));
         end
     end

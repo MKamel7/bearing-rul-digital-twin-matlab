@@ -25,9 +25,15 @@ The v1 outer-race RUL comparison has been executed on held-out folds using the o
 
 The age-only baseline is the conservative yardstick. The feature-similarity model is an auditable comparator with a mixed result: lower snapshot-weighted minute error, worse normalized and mean per-bearing error. Do not present it as the final best RUL model.
 
+## Current hybrid estimator boundary
+
+The hybrid health-rate model is the current accepted measured-data estimator gate. It improves the age-only baseline on weighted MAE, weighted normalized MAE and mean per-bearing MAE under the same held-out outer-race protocols.
+
+The model is still an empirical estimator over accelerated XJTU-SY bearing-rig records. It may be described as a leakage-safe measured-data RUL pilot. It must not be described as a deployed factory model, a field-service lifetime model or a validated conveyor/robot-joint prognostics model.
+
 ## Current live-replay boundary
 
-`scripts/show_live_rul_replay.m` displays a live measured-data replay. It reads official XJTU-SY lifecycle feature rows for a held-out bearing, fits the feature-similarity model on training bearings from the nested fold, and predicts each replay row as it arrives in the MATLAB figure loop.
+`scripts/show_live_rul_replay.m` displays a live measured-data replay. It reads official XJTU-SY lifecycle feature rows for a held-out bearing, fits the hybrid health-rate model on training bearings from the nested fold, and predicts each replay prefix as it arrives in the MATLAB figure loop.
 
 This is a genuine online inference path over recorded measured sensor-derived features. It is not a live hardware sensor stream. A hardware-live claim requires replacing the table replay with a DAQ, serial, OPC UA or equivalent acquisition source that supplies the same validated feature columns and timestamps.
 

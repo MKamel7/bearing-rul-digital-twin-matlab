@@ -9,7 +9,7 @@ projectRoot = fileparts(fileparts(mfilename("fullpath")));
 addpath(genpath(fullfile(projectRoot, "src")));
 
 bearingID = "Bearing3_1";
-modelName = "feature-similarity model";
+modelName = "hybrid health-rate model";
 protocolName = "nested leave-one-bearing-out pilot";
 replayDelaySeconds = 0.01;
 
@@ -27,7 +27,6 @@ features = readtable(featurePath, TextType="string");
 manifest = readtable(manifestPath, TextType="string");
 outerRaceManifest = manifest(manifest.FailureLabel == "outer race", :);
 outerRaceFeatures = features(features.FailureLabel == "outer race", :);
-featureNames = ["HorizontalRMS", "VerticalRMS", "HorizontalCrestFactor", "VerticalCrestFactor"];
 
 folds = buildEvaluationFolds(outerRaceManifest, "outer race", protocolName);
 heldoutFoldRows = folds(folds.BearingID == bearingID & folds.Role == "heldout", :);
@@ -44,7 +43,7 @@ if isempty(trainRows) || isempty(featureRows)
         "Could not find training/replay feature rows for %s, %s, %s.", bearingID, modelName, protocolName);
 end
 
-model = fitFeatureSimilarityRulModel(trainRows, featureNames);
+model = fitHybridHealthRateRulModel(trainRows);
 featureRows.MeanRMS = mean([featureRows.HorizontalRMS, featureRows.VerticalRMS], 2);
 featureRows = sortrows(featureRows, "ElapsedMinutes");
 rowCount = height(featureRows);
@@ -99,8 +98,8 @@ boundaryText = text(statusAxis, 0.02, 0.16, ...
 boundaryText.FontWeight = "bold";
 
 for idx = 1:rowCount
-    liveFrame = featureRows(idx, :);
-    predictedRULMinutes = predictFeatureSimilarityRul(model, liveFrame);
+    prefixPredictions = predictHybridHealthRateRul(model, featureRows(1:idx, :));
+    predictedRULMinutes = prefixPredictions(end);
     absoluteErrorMinutes = abs(predictedRULMinutes - actualRULMinutes(idx));
     elapsed = featureRows.ElapsedMinutes(idx);
     addpoints(rmsLine, elapsed, featureRows.MeanRMS(idx));

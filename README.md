@@ -6,7 +6,7 @@ Physics-informed MATLAB/Simulink/Simscape project for rolling-element bearing re
 
 V1 is complete as a reproducible measured-data bearing RUL prototype. The project verifies the official XJTU-SY archive, extracts measured lifecycle features for all 9,216 official snapshots, evaluates outer-race age-only and feature-similarity RUL models on manifest-derived held-out folds, and records the mixed result without turning it into a field-service or factory-production claim.
 
-The feature-similarity model lowers snapshot-weighted minute MAE versus the age-only baseline, but worsens normalized and mean per-bearing error. It is retained as an auditable comparator, not a final headline RUL model. The live MATLAB view replays official measured XJTU-SY rows and computes each displayed RUL estimate online from the frozen training fold. See `docs/reports/v1_completion_report_2026-09-13.md` and `docs/reports/final_correctness_audit_2026-09-13.md`.
+The feature-similarity model lowers snapshot-weighted minute MAE versus the age-only baseline, but worsens normalized and mean per-bearing error. It is retained as an auditable comparator, not a final headline RUL model. The post-v1 hybrid health-rate model improves weighted, normalized and mean per-bearing MAE versus the age-only baseline, and is now the accepted measured-data estimator gate. The live MATLAB view replays official measured XJTU-SY rows and computes each displayed RUL estimate online from the frozen training fold. See `docs/reports/v1_completion_report_2026-09-13.md`, `docs/reports/hybrid_health_rate_rul_2026-09-13.md` and `docs/reports/final_correctness_audit_2026-09-13.md`.
 
 ## Claim boundaries
 
@@ -166,11 +166,19 @@ Compare the age-only baseline with the measured-feature similarity model:
 
 Current model-comparison verdict: the feature-similarity model improves snapshot-weighted minute MAE by reducing the long `Bearing3_1` error, but worsens normalized and mean per-bearing error. It is retained as an auditable comparator, not as a final public RUL performance claim. The tracked summary is `docs/reports/rul_model_comparison_2026-09-13.md`; ignored comparison artifacts are written under `results/rul_model_comparison`.
 
+Run the hybrid health-rate RUL model:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_hybrid_health_rate_rul_model.m')"
+```
+
+Current hybrid verdict: the hybrid health-rate model improves the nested outer-race age-only baseline on weighted MAE, weighted normalized MAE and mean per-bearing MAE. It is the current accepted measured-data estimator gate, not an industrial deployment claim. The tracked summary is `docs/reports/hybrid_health_rate_rul_2026-09-13.md`; ignored comparison artifacts are written under `results/hybrid_health_rate_rul`.
+
 Show the measured-data live RUL replay in MATLAB:
 
 ```powershell
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -r "cd('E:\Projects\bearing-rul-digital-twin-matlab'); run('scripts/show_live_rul_replay.m')"
 ```
 
-The replay uses official XJTU-SY lifecycle feature rows for held-out `Bearing3_1`, fits the feature-similarity model on the other outer-race bearings in the nested fold, then predicts each incoming replay row as it is displayed. It is genuine measured-data replay, not a live hardware DAQ/serial/OPC UA stream.
+The replay uses official XJTU-SY lifecycle feature rows for held-out `Bearing3_1`, fits the hybrid health-rate model on the other outer-race bearings in the nested fold, then predicts each incoming replay prefix as it is displayed. It is genuine measured-data replay, not a live hardware DAQ/serial/OPC UA stream.
 

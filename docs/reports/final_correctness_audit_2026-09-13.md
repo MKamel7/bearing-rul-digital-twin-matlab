@@ -29,16 +29,22 @@ It is not correct to present it as:
 - Outer-race age-only and feature-similarity RUL models use identical manifest-derived folds.
 - Feature-similarity scaling is fit on training bearings only.
 - `fitFeatureSimilarityRulModel` and `predictFeatureSimilarityRul` separate historical training from live-frame prediction.
-- `scripts/show_live_rul_replay.m` fits from the nested fold training bearings and predicts each held-out replay row online.
+- `fitHybridHealthRateRulModel` and `predictHybridHealthRateRul` add a training-only hybrid age/health-rate estimator.
+- `scripts/show_live_rul_replay.m` fits from the nested fold training bearings and predicts each held-out replay prefix online.
 - Generated raw data and result artifacts remain ignored rather than committed.
 
 ## Current RUL Result
 
-The feature-similarity model has a mixed measured result. It improves snapshot-weighted MAE on the outer-race subset, mainly by reducing the long `Bearing3_1` error, but it worsens normalized and mean per-bearing error. The conservative project conclusion is therefore:
+The v1 feature-similarity model has a mixed measured result. It improves snapshot-weighted MAE on the outer-race subset, mainly by reducing the long `Bearing3_1` error, but it worsens normalized and mean per-bearing error.
+
+The post-v1 hybrid health-rate model clears the next software gate. On nested outer-race held-out folds it improves the age-only baseline from 898.90 to 757.05 weighted MAE minutes, from 0.4425 to 0.3806 weighted normalized MAE and from 201.12 to 172.97 mean per-bearing MAE minutes.
+
+The conservative project conclusion is therefore:
 
 - age-only remains the baseline
 - feature similarity remains an auditable measured-feature comparator
-- no headline public RUL performance claim should be made from the feature-similarity model alone
+- hybrid health-rate is the current accepted measured-data estimator
+- no field-service, factory-deployment or hardware-live claim should be made from the hybrid result alone
 
 ## Verified Commands
 
@@ -60,6 +66,12 @@ Live measured-data replay execution:
 & 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/show_live_rul_replay.m')"
 ```
 
+Hybrid health-rate model comparison:
+
+```powershell
+& 'C:\Program Files\MATLAB\R2026a\bin\matlab.exe' -batch "run('scripts/run_hybrid_health_rate_rul_model.m')"
+```
+
 Reliable non-Simscape regression suite:
 
 ```powershell
@@ -70,4 +82,4 @@ Reliable non-Simscape regression suite:
 
 The reliable non-Simscape suite is the acceptance gate for this v1 software state. The Simscape-inclusive test remains outside the final acceptance gate because the MATLAB desktop previously crashed in a Chromium/Qt browser path during Simscape-inclusive execution. That crash is a tooling stability issue to isolate separately; it should not be hidden, and it should not be used as evidence against the measured-data RUL workflow.
 
-The next real technical improvement is a stronger health indicator or hybrid estimator with a frozen selection rule. It must improve both weighted and per-bearing metrics before becoming the public model.
+The next real technical improvement is a hardware-live acquisition path or a separately measured conveyor/robot-bearing dataset. Without that evidence, factory integration remains an illustrative simulation boundary rather than a production RUL validation.
