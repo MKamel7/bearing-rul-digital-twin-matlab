@@ -19,6 +19,12 @@ The robot and conveyor cell may demonstrate how RUL estimates could drive inspec
 
 The official full XJTU-SY lifecycle archive was downloaded, SHA-256 verified, extracted and file-count checked on 2026-09-13. The project may now start measured lifecycle feature extraction and training-protocol work. No RUL performance claim is allowed until the evaluation protocol is frozen, preprocessing is fit on training bearings only and held-out bearings are evaluated without post-hoc tuning.
 
+## Current v1 RUL boundary
+
+The v1 outer-race RUL comparison has been executed on held-out folds using the official lifecycle feature table. It supports a measured-data pilot claim, not an industrial deployment claim.
+
+The age-only baseline is the conservative yardstick. The feature-similarity model is an auditable comparator with a mixed result: lower snapshot-weighted minute error, worse normalized and mean per-bearing error. Do not present it as the final best RUL model.
+
 ## Accelerated-life caveat
 
 XJTU-SY Condition 1 applies 12 kN to an LDK UER204 bearing whose recorded static load rating is 6.65 kN. That is a load-to-static-rating ratio of about 1.80. Accelerated-test minutes must therefore not be translated into field-service years without a separately justified life model and application load spectrum.

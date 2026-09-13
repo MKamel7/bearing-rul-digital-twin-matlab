@@ -2,6 +2,12 @@
 
 Physics-informed MATLAB/Simulink/Simscape project for rolling-element bearing remaining-useful-life estimation, using the XJTU-SY LDK UER204 lifecycle dataset as the measured validation anchor.
 
+## V1 status
+
+V1 is complete as a reproducible measured-data bearing RUL prototype. The project verifies the official XJTU-SY archive, extracts measured lifecycle features for all 9,216 official snapshots, evaluates outer-race age-only and feature-similarity RUL models on manifest-derived held-out folds, and records the mixed result without turning it into a field-service or factory-production claim.
+
+The feature-similarity model lowers snapshot-weighted minute MAE versus the age-only baseline, but worsens normalized and mean per-bearing error. It is retained as an auditable comparator, not a final headline RUL model. See `docs/reports/v1_completion_report_2026-09-13.md`.
+
 ## Claim boundaries
 
 This project targets a bearing digital-twin prototype calibrated with recorded experimental data. The later robotic conveyor cell is an illustrative integration simulation. Measured bearing-rig results must not be presented as robot-joint, conveyor, or BMW production lifetime accuracy.
