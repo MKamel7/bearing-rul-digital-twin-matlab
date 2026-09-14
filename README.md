@@ -120,3 +120,10 @@ Do not claim:
 - field-service lifetime prediction
 - complete XJTU-SY rig replication
 - conveyor, robot-joint or BMW production RUL accuracy
+
+## Licence
+
+MIT, see [LICENSE](LICENSE). It covers the code, models and documentation in
+this repository. It does not cover the XJTU-SY bearing dataset, which is
+published by its own authors under their own terms and is not redistributed
+here.
