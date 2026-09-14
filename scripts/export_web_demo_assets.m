@@ -74,7 +74,7 @@ end
 
 function renderReplayVideo(featureRows, predictionRows, videoPath, posterPath, modelName)
 frameCount = 96;
-slowdownFactor = 10;
+slowdownFactor = 5;   % 96 distinct frames x 5 = 480 frames at 24 fps = 20 s
 frameIdx = unique(round(linspace(1, height(predictionRows), frameCount)));
 figureHandle = figure("Visible", "off", "Color", "w", "Position", [100 100 960 540]);
 plotHandles = initializeReplayFigure(figureHandle, featureRows, predictionRows, modelName);

@@ -10,7 +10,7 @@ This is a **measured-data digital-twin prototype**, not a deployed factory or ha
 
 The replay below uses official XJTU-SY lifecycle feature rows from held-out `Bearing3_1`. The hybrid health-rate model is fit on training bearings only, then predicts each replay prefix as the row arrives.
 
-[Watch the 40 s measured-data replay](docs/assets/bearing_rul_hybrid_live_replay.mp4)
+[Watch the 20 s measured-data replay](docs/assets/bearing_rul_hybrid_live_replay.mp4)
 
 ![Measured-data RUL replay poster](docs/assets/bearing_rul_hybrid_live_replay_poster.png)
 
