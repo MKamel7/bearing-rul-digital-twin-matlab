@@ -1,5 +1,7 @@
 # Bearing RUL Digital Twin MATLAB
 
+[![CI](https://github.com/MKamel7/bearing-rul-digital-twin-matlab/actions/workflows/ci.yml/badge.svg)](https://github.com/MKamel7/bearing-rul-digital-twin-matlab/actions/workflows/ci.yml)
+
 MATLAB, Simulink and Simscape project for rolling-element bearing remaining-useful-life estimation. The project combines an audited XJTU-SY measured vibration workflow, leakage-controlled RUL model comparisons, a reduced Simscape bearing body, and an online measured-data replay.
 
 This is a **measured-data digital-twin prototype**, not a deployed factory or hardware-live acquisition system.

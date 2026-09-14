@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: MATLAB public test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
+        with:
+          release: R2026a
+
+      # scripts/run_public_ci_checks.m runs the nine test classes that need
+      # neither Simscape nor the XJTU-SY archive. The dataset is not
+      # redistributed here, so the data-dependent classes cannot run in CI.
+      - name: Run public test suite
+        uses: matlab-actions/run-command@v2
+        with:
+          command: run("scripts/run_public_ci_checks.m")
