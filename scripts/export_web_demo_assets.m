@@ -50,6 +50,91 @@ fprintf("Wrote %s\n", videoPath);
 fprintf("Wrote %s\n", posterPath);
 fprintf("Wrote %s\n", metricsPath);
 
+compressReplayVideo(videoPath);
+publishWebDemoAssets(projectRoot, videoPath, posterPath);
+
+function compressReplayVideo(videoPath)
+%COMPRESSREPLAYVIDEO Re-encode with x264 when ffmpeg is available.
+%
+%   MATLAB's MPEG-4 writer costs about 5.5 KB per frame whatever Quality is
+%   set to (35 and 5 differ by under 2 percent), and it does not exploit the
+%   fact that each distinct frame is written several times. x264 does, and
+%   turns the same 20 s into roughly a fifth of the bytes with no visible
+%   difference on line plots.
+%
+%   Optional by design. Without ffmpeg the script still produces a correct
+%   video, just a larger one, and says so rather than failing.
+
+before = dir(videoPath);
+if system("ffmpeg -version") ~= 0
+    fprintf("ffmpeg not found, publishing MATLAB's encode (%.0f KB). Install ffmpeg to shrink it.\n", ...
+        before.bytes/1024);
+    return
+end
+
+% string(...) + ".mp4", not [tempname ".mp4"]: bracketing a char with a string
+% builds a 1x2 string ARRAY, which then makes sprintf cycle its format and
+% emit two concatenated commands.
+tempOut = string(tempname) + ".mp4";
+command = sprintf("ffmpeg -y -v error -i ""%s"" -c:v libx264 -crf 28 -preset slow " + ...
+                  "-pix_fmt yuv420p -an -movflags +faststart ""%s""", videoPath, tempOut);
+if system(command) ~= 0 || ~isfile(tempOut)
+    warning("BearingRUL:CompressFailed", "ffmpeg re-encode failed, keeping MATLAB's encode.");
+    return
+end
+
+movefile(tempOut, videoPath, "f");
+after = dir(videoPath);
+fprintf("Compressed %.0f KB to %.0f KB with x264\n", before.bytes/1024, after.bytes/1024);
+end
+
+function publishWebDemoAssets(projectRoot, videoPath, posterPath)
+%PUBLISHWEBDEMOASSETS Copy the generated assets to the ones the README shows.
+%
+%   results/web_demo is scratch output and is gitignored. docs/assets holds
+%   the committed copies that the README links to. Leaving the copy as a
+%   manual step is how the published video and the script that makes it drift
+%   apart, so it is done here.
+%
+%   The portfolio site keeps its own copy in a different repository. That path
+%   is deliberately NOT hardcoded: an absolute path into another checkout is
+%   the exact defect this project already had twice. The sync command is
+%   printed instead.
+
+assetsDir = fullfile(projectRoot, "docs", "assets");
+if ~isfolder(assetsDir)
+    mkdir(assetsDir);
+end
+
+publish(videoPath,  fullfile(assetsDir, "bearing_rul_hybrid_live_replay.mp4"));
+publish(posterPath, fullfile(assetsDir, "bearing_rul_hybrid_live_replay_poster.png"));
+
+fprintf("\nThe portfolio keeps its own copy. To sync it, from the portfolio checkout:\n");
+fprintf("  cp '%s' public/media/bearing-rul-hybrid-live-replay.mp4\n", ...
+    fullfile(assetsDir, "bearing_rul_hybrid_live_replay.mp4"));
+fprintf("  npm run build && npm run budget\n");
+end
+
+function publish(sourcePath, targetPath)
+% Copy only when the bytes differ, so an unchanged asset is not rewritten and
+% does not show up as a spurious change in git.
+if isfile(targetPath) && isequal(readBytes(sourcePath), readBytes(targetPath))
+    fprintf("Unchanged %s\n", targetPath);
+    return
+end
+[ok, msg] = copyfile(sourcePath, targetPath, "f");
+if ~ok
+    error("BearingRUL:PublishFailed", "could not publish %s: %s", targetPath, msg);
+end
+fprintf("Published %s\n", targetPath);
+end
+
+function bytes = readBytes(path)
+fid = fopen(path, "r");
+cleanup = onCleanup(@() fclose(fid));
+bytes = fread(fid, Inf, "*uint8");
+end
+
 function writeMetricsJson(summaryMetrics, metricsPath, modelName, protocolName)
 hybridRow = summaryMetrics(summaryMetrics.Model == modelName & summaryMetrics.Protocol == protocolName, :);
 baselineRow = summaryMetrics(summaryMetrics.Model == "age-only baseline" & summaryMetrics.Protocol == protocolName, :);
@@ -89,7 +174,12 @@ for idx = frameIdx
     if idx == frameIdx(round(numel(frameIdx) * 0.62))
         exportgraphics(figureHandle, posterPath, Resolution=160);
     end
-    frame = getframe(figureHandle);
+    % print at a fixed DPI rather than getframe, which captures at the
+    % display's scaling. On a 150% display getframe returns 1440x810 instead
+    % of 960x540: the same picture in nine times the bytes, and enough to
+    % break the portfolio's video budget.
+    frame = print(figureHandle, "-RGBImage", "-r96");
+    frame = frame(1:2*floor(size(frame,1)/2), 1:2*floor(size(frame,2)/2), :);  % H.264 needs even dimensions
     for repeatIdx = 1:slowdownFactor
         writeVideo(videoWriter, frame);
     end
